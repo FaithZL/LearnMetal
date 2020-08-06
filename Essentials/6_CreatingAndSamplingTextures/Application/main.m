@@ -16,8 +16,6 @@ Application entry point for all platforms
 
 #if defined(TARGET_IOS) || defined(TARGET_TVOS)
 
-//https://developer.apple.com/documentation/metal/using_a_render_pipeline_to_render_primitives?language=objc
-
 int main(int argc, char * argv[]) {
 
 #if TARGET_OS_SIMULATOR && (!defined(__IPHONE_13_0) ||  !defined(__TVOS_13_0))

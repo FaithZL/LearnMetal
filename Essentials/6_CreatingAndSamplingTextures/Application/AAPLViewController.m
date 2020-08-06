@@ -2,7 +2,7 @@
 See LICENSE folder for this sample’s licensing information.
 
 Abstract:
-Implementation of our cross-platform view controller
+Implementation of the cross-platform view controller
 */
 
 #import "AAPLViewController.h"
@@ -24,17 +24,13 @@ Implementation of our cross-platform view controller
     
     _view.device = MTLCreateSystemDefaultDevice();
     
-    _view.clearColor = MTLClearColorMake(0.0, 0.9, 1.0, 1.0);
-    
     NSAssert(_view.device, @"Metal is not supported on this device");
     
-    _renderer = [AAPLRenderer alloc];
-    
-    [_renderer initWithMetalKitView:_view];
+    _renderer = [[AAPLRenderer alloc] initWithMetalKitView:_view];
     
     NSAssert(_renderer, @"Renderer failed initialization");
 
-    // Initialize our renderer with the view size
+    // Initialize the renderer with the view size
     [_renderer mtkView:_view drawableSizeWillChange:_view.drawableSize];
 
     _view.delegate = _renderer;

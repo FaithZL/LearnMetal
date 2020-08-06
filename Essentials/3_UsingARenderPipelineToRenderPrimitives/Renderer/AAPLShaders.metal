@@ -19,6 +19,7 @@ typedef struct
     // The [[position]] attribute of this member indicates that this value
     // is the clip space position of the vertex when this structure is
     // returned from the vertex function.
+    //
     float4 position [[position]];
 
     // Since this member does not have a special attribute, the rasterizer
@@ -31,6 +32,7 @@ typedef struct
 
 vertex RasterizerData
 vertexShader(uint vertexID [[vertex_id]],
+             // AAPLVertexInputIndexVertices 在CPU端已经指定了，对应的就是顶点
              constant AAPLVertex *vertices [[buffer(AAPLVertexInputIndexVertices)]],
              constant vector_uint2 *viewportSizePointer [[buffer(AAPLVertexInputIndexViewportSize)]])
 {
@@ -39,6 +41,7 @@ vertexShader(uint vertexID [[vertex_id]],
     // Index into the array of positions to get the current vertex.
     // The positions are specified in pixel dimensions (i.e. a value of 100
     // is 100 pixels from the origin).
+    // 与OpenGL有点不同的是着色器可以接受顶点列表，意味着，可以操作其他顶点的数据
     float2 pixelSpacePosition = vertices[vertexID].position.xy;
 
     // Get the viewport size and cast to float.

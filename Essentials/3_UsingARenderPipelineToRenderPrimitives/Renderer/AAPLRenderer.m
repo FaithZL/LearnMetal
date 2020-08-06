@@ -101,6 +101,7 @@ Implementation of a platform independent renderer class, which performs Metal se
         renderEncoder.label = @"MyRenderEncoder";
 
         // Set the region of the drawable to draw into.
+        // 设置视口，这里与OpenGL的不同，OpenGL的是三个维度都是-1，1，这里可以自行设置
         [renderEncoder setViewport:(MTLViewport){0.0, 0.0, _viewportSize.x, _viewportSize.y, 0.0, 1.0 }];
         
         [renderEncoder setRenderPipelineState:_pipelineState];
