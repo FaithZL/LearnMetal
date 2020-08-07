@@ -15,6 +15,8 @@ Application entry point for all platforms.
 
 #if defined(TARGET_IOS) || defined(TARGET_TVOS)
 
+//https://developer.apple.com/documentation/metal/synchronization/synchronizing_cpu_and_gpu_work?language=objc
+
 int main(int argc, char * argv[]) {
 
 #if TARGET_OS_SIMULATOR
