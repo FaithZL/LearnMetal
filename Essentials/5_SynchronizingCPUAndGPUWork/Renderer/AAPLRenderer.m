@@ -195,12 +195,14 @@ static const NSUInteger NumTriangles = 50;
 {
     // Wait to ensure only `MaxFramesInFlight` number of frames are getting processed
     // by any stage in the Metal pipeline (CPU, GPU, Metal, Drivers, etc.).
+    // 等待_inFlightSemaphore信号，等不到就一直阻塞
     dispatch_semaphore_wait(_inFlightSemaphore, DISPATCH_TIME_FOREVER);
 
     // Iterate through the Metal buffers, and cycle back to the first when you've written to the last.
     _currentBuffer = (_currentBuffer + 1) % MaxFramesInFlight;
 
     // Update buffer data.
+    // 更新三角形列表中的数据
     [self updateState];
 
     // Create a new command buffer for each rendering pass to the current drawable.
@@ -215,9 +217,11 @@ static const NSUInteger NumTriangles = 50;
         renderEncoder.label = @"MyRenderEncoder";
 
         // Set render command encoder state.
+        // 设置管线状态
         [renderEncoder setRenderPipelineState:_pipelineState];
 
         // Set the current vertex buffer.
+        // 设置顶点数据
         [renderEncoder setVertexBuffer:_vertexBuffers[_currentBuffer]
                                 offset:0
                                atIndex:AAPLVertexInputIndexVertices];
@@ -244,11 +248,16 @@ static const NSUInteger NumTriangles = 50;
     // This completion indicates that the dynamic buffers that were written-to in this frame, are no
     // longer needed by Metal and the GPU; therefore, the CPU can overwrite the buffer contents
     // without corrupting any rendering operations.
+    // 一种信号量，用来确保GPU读取的缓冲区不会被CPU同时写入
+    // 原来这里是核心，用于同步数据
     __block dispatch_semaphore_t block_semaphore = _inFlightSemaphore;
-    [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> buffer)
-     {
-         dispatch_semaphore_signal(block_semaphore);
-     }];
+    
+    MTLCommandBufferHandler block = ^(id<MTLCommandBuffer> buffer)
+    {
+        dispatch_semaphore_signal(block_semaphore);
+    };
+    // 添加一个回调函数，当command buffer中的命令执行完毕之后就执行回调函数
+    [commandBuffer addCompletedHandler:block];
 
     // Finalize CPU work and submit the command buffer to the GPU.
     [commandBuffer commit];
