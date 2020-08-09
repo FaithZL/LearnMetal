@@ -170,7 +170,7 @@ Implementation of renderer class which performs Metal setup and per frame render
     // Process the input image.
     id<MTLComputeCommandEncoder> computeEncoder = [commandBuffer computeCommandEncoder];
 
-    
+    // 先进行灰化处理
     [computeEncoder setComputePipelineState:_computePipelineState];
 
     [computeEncoder setTexture:_inputTexture
@@ -210,6 +210,7 @@ Implementation of renderer class which performs Metal setup and per frame render
                               atIndex:AAPLVertexInputIndexViewportSize];
 
         // Encode the output texture from the previous stage.
+        // 设置纹理，直接将计算好的内容传入
         [renderEncoder setFragmentTexture:_outputTexture
                                   atIndex:AAPLTextureIndexOutput];
 
@@ -217,7 +218,8 @@ Implementation of renderer class which performs Metal setup and per frame render
         [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangle
                           vertexStart:0
                           vertexCount:6];
-
+        
+        // 这个不能漏掉，这个表示所有命令已经生成完毕
         [renderEncoder endEncoding];
 
         // Schedule a present once the framebuffer is complete using the current drawable

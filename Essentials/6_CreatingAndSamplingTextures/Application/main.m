@@ -16,6 +16,8 @@ Application entry point for all platforms
 
 #if defined(TARGET_IOS) || defined(TARGET_TVOS)
 
+//https://developer.apple.com/documentation/metal/creating_and_sampling_textures
+
 int main(int argc, char * argv[]) {
 
 #if TARGET_OS_SIMULATOR && (!defined(__IPHONE_13_0) ||  !defined(__TVOS_13_0))
