@@ -107,7 +107,7 @@ static const size_t intersectionStride = sizeof(MPSIntersectionDistancePrimitive
     
     // Generates rays according to view/projection matrices
     computeDescriptor.computeFunction = [_library newFunctionWithName:@"rayKernel"];
-    
+    // 构建ray管线
     _rayPipeline = [_device newComputePipelineStateWithDescriptor:computeDescriptor
                                                           options:0
                                                        reflection:nil
@@ -118,7 +118,7 @@ static const size_t intersectionStride = sizeof(MPSIntersectionDistancePrimitive
         
     // Consumes ray/scene intersection test results to perform shading
     computeDescriptor.computeFunction = [_library newFunctionWithName:@"shadeKernel"];
-    
+    // 构建着色管线
     _shadePipeline = [_device newComputePipelineStateWithDescriptor:computeDescriptor
                                                           options:0
                                                        reflection:nil
@@ -129,7 +129,7 @@ static const size_t intersectionStride = sizeof(MPSIntersectionDistancePrimitive
     
     // Consumes shadow ray intersection tests to update the output image
     computeDescriptor.computeFunction = [_library newFunctionWithName:@"shadowKernel"];
-    
+    // 构建shadowray管线
     _shadowPipeline = [_device newComputePipelineStateWithDescriptor:computeDescriptor
                                                              options:0
                                                           reflection:nil
@@ -140,7 +140,7 @@ static const size_t intersectionStride = sizeof(MPSIntersectionDistancePrimitive
 
     // Averages the current frame's output image with all previous frames
     computeDescriptor.computeFunction = [_library newFunctionWithName:@"accumulateKernel"];
-    
+    // 构建计算管线
     _accumulatePipeline = [_device newComputePipelineStateWithDescriptor:computeDescriptor
                                                                  options:0
                                                               reflection:nil
@@ -156,6 +156,7 @@ static const size_t intersectionStride = sizeof(MPSIntersectionDistancePrimitive
     renderDescriptor.fragmentFunction = [_library newFunctionWithName:@"copyFragment"];
     renderDescriptor.colorAttachments[0].pixelFormat = _view.colorPixelFormat;
 
+    // 构建渲染管线
     _copyPipeline = [_device newRenderPipelineStateWithDescriptor:renderDescriptor error:&error];
     
     if (!_copyPipeline)
@@ -255,6 +256,7 @@ static const size_t intersectionStride = sizeof(MPSIntersectionDistancePrimitive
     _intersector.rayMaskOptions = MPSRayMaskOptionPrimitive;
     
     // Create an acceleration structure from our vertex position data
+    // 构建加速结构
     _accelerationStructure = [[MPSTriangleAccelerationStructure alloc] initWithDevice:_device];
     
     _accelerationStructure.vertexBuffer = _vertexPositionBuffer;
