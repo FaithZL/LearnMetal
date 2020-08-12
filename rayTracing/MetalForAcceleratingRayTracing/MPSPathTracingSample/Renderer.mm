@@ -97,6 +97,7 @@ static const size_t intersectionStride = sizeof(MPSIntersectionDistancePrimitive
 
 - (void)createPipelines
 {
+    // 创建需要的所有管线状态，一个核函数对应一个管线状态
     NSError *error = NULL;
     
     // Create compute pipelines will will execute code on the GPU
@@ -410,6 +411,7 @@ static const size_t intersectionStride = sizeof(MPSIntersectionDistancePrimitive
     [computeEncoder setTexture:_renderTargets[0] atIndex:1];
     
     // Bind the ray generation compute pipeline
+    //
     [computeEncoder setComputePipelineState:_rayPipeline];
     
     // Launch threads
@@ -534,6 +536,7 @@ static const size_t intersectionStride = sizeof(MPSIntersectionDistancePrimitive
     }
 
     // Finally, commit the command buffer so that the GPU can start executing
+    // 最后，提交命令到GPU端执行，假设有5个指令如果前三个执行完毕之后需要执行一次同步，那么就前三个指令commit一次
     [commandBuffer commit];
 }
 
