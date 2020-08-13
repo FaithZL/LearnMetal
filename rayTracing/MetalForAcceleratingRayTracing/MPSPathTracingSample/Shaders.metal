@@ -82,6 +82,7 @@ float halton(unsigned int i, unsigned int d) {
 
 // Generates rays starting from the camera origin and traveling towards the image plane aligned
 // with the camera's coordinate system.
+// 生成ray
 kernel void rayKernel(uint2 tid [[thread_position_in_grid]],
                       // Buffers bound on the CPU. Note that 'constant' should be used for small
                       // read-only data which will be reused across threads. 'device' should be
@@ -142,6 +143,7 @@ kernel void rayKernel(uint2 tid [[thread_position_in_grid]],
 
 // Interpolates vertex attribute of an arbitrary type across the surface of a triangle
 // given the barycentric coordinates and triangle index in an intersection struct
+// 重心插值函数，看起比较像c++
 template<typename T>
 inline T interpolateVertexAttribute(device T *attributes, Intersection intersection) {
     // Barycentric coordinates sum to one
