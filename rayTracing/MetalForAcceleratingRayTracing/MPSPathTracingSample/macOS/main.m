@@ -5,8 +5,8 @@ Abstract:
 Main Application Entrypoint
 */
 
-#import <Cocoa/Cocoa.h>
+#include <Cocoa/Cocoa.h>
 
 int main(int argc, const char * argv[]) {
-    return NSApplicationMain(argc, argv);
+//    return NSApplicationMain(argc, argv);
 }
