@@ -14,9 +14,11 @@ Implementation of the renderer class that performs Metal setup and per-frame ren
 {    
     id<MTLDevice>              _device;
     id<MTLCommandQueue>        _commandQueue;
+    // 渲染管线状态
     id<MTLRenderPipelineState> _pipelineState;
     
     // Combined depth and stencil state object.
+    // 模板，深度测试管线状态
     id<MTLDepthStencilState> _depthState;
     
     vector_uint2             _viewportSize;
@@ -38,6 +40,7 @@ Implementation of the renderer class that performs Metal setup and per-frame ren
         
         // Indicate that Metal should clear all values in the depth buffer to `1.0` when you create
         // a render command encoder with the MetalKit view's `currentRenderPassDescriptor` property.
+        // 设置默认深度
         mtkView.clearDepth = 1.0;
 
         id<MTLLibrary> defaultLibrary = [_device newDefaultLibrary];
@@ -60,9 +63,9 @@ Implementation of the renderer class that performs Metal setup and per-frame ren
         
         MTLDepthStencilDescriptor *depthDescriptor = [MTLDepthStencilDescriptor new];
         depthDescriptor.depthCompareFunction = MTLCompareFunctionLessEqual;
+        // 开起深度写入
         depthDescriptor.depthWriteEnabled = YES;
         _depthState = [_device newDepthStencilStateWithDescriptor:depthDescriptor];
-        
         // Create the command queue.
         _commandQueue = [_device newCommandQueue];
     }
@@ -96,6 +99,7 @@ Implementation of the renderer class that performs Metal setup and per-frame ren
         renderEncoder.label = @"Render Encoder";
         
         // Encode the render pipeline state object.
+        // 将两个状态添加至编码器中
         [renderEncoder setRenderPipelineState:_pipelineState];
         
         [renderEncoder setDepthStencilState:_depthState];
