@@ -18,6 +18,10 @@ Application entry point for all platforms.
 
 // https://developer.apple.com/documentation/metal/customizing_render_pass_setup
 // demo内容为离屏渲染一张纹理，然后将纹理作为数据源渲染到屏幕上
+// https://developer.apple.com/documentation/metal/shader_authoring
+// shader优化链接
+// https://developer.apple.com/documentation/metal/libraries/building_a_library_with_metal_s_command-line_tools
+// https://developer.apple.com/documentation/metal/functions
 
 int main(int argc, char * argv[]) {
 
