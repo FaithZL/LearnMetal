@@ -123,6 +123,7 @@ static const NSUInteger AAPLColumnLights = AAPLGroundLights  + 0.30 * AAPLNumLig
     for(NSUInteger i = 0; i < AAPLMaxBuffersInFlight; i++)
     {
         // Indicate shared storage so that both the  CPU can access the buffers
+        // 访问模式，MTLResourceStorageModeShared表示GPU与CPU共享
         const MTLResourceOptions storageMode = MTLResourceStorageModeShared;
 
         uniformBuffersCArray[i] = [_device newBufferWithLength:sizeof(AAPLUniforms)
@@ -135,7 +136,7 @@ static const NSUInteger AAPLColumnLights = AAPLGroundLights  + 0.30 * AAPLNumLig
 
         lightPositionsCArray[i].label = [NSString stringWithFormat:@"LightPositions%lu", i];
     }
-
+    // NSArray我暂时理解为跟vector是一类东西
     _uniformBuffers = [[NSArray alloc] initWithObjects:uniformBuffersCArray count:AAPLMaxBuffersInFlight];
 
     _lightPositions = [[NSArray alloc] initWithObjects:lightPositionsCArray count:AAPLMaxBuffersInFlight];
