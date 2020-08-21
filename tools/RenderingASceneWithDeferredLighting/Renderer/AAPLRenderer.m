@@ -142,9 +142,10 @@ static const NSUInteger AAPLColumnLights = AAPLGroundLights  + 0.30 * AAPLNumLig
     _lightPositions = [[NSArray alloc] initWithObjects:lightPositionsCArray count:AAPLMaxBuffersInFlight];
 
     id <MTLLibrary> defaultLibrary = [_device newDefaultLibrary];
-
+    
+    // 用于描述顶点数据的组织方式
     _defaultVertexDescriptor = [[MTLVertexDescriptor alloc] init];
-
+    // attributes描述顶点数据的储存方式
     // Positions.
     _defaultVertexDescriptor.attributes[AAPLVertexAttributePosition].format = MTLVertexFormatFloat3;
     _defaultVertexDescriptor.attributes[AAPLVertexAttributePosition].offset = 0;
@@ -169,7 +170,8 @@ static const NSUInteger AAPLColumnLights = AAPLGroundLights  + 0.30 * AAPLNumLig
     _defaultVertexDescriptor.attributes[AAPLVertexAttributeBitangent].format = MTLVertexFormatHalf4;
     _defaultVertexDescriptor.attributes[AAPLVertexAttributeBitangent].offset = 24;
     _defaultVertexDescriptor.attributes[AAPLVertexAttributeBitangent].bufferIndex = AAPLBufferIndexMeshGenerics;
-
+    
+    // layout用于描述在渲染片元时vertex shader如何提取
     // Position Buffer Layout
     _defaultVertexDescriptor.layouts[AAPLBufferIndexMeshPositions].stride = 12;
     _defaultVertexDescriptor.layouts[AAPLBufferIndexMeshPositions].stepRate = 1;
