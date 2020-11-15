@@ -232,7 +232,7 @@ static const size_t intersectionStride = sizeof(MPSIntersectionDistancePrimitive
     _triangleMaskBuffer = [_device newBufferWithLength:masks.size() * sizeof(uint32_t) options:options];
     
     // Copy vertex data into buffers
-    memcpy(_vertexPositionBuffer.contents, &vertices[0], _vertexPositionBuffer.length);
+    memcpy([_vertexPositionBuffer contents], &vertices[0], _vertexPositionBuffer.length);
     memcpy(_vertexColorBuffer.contents, &colors[0], _vertexColorBuffer.length);
     memcpy(_vertexNormalBuffer.contents, &normals[0], _vertexNormalBuffer.length);
     memcpy(_triangleMaskBuffer.contents, &masks[0], _triangleMaskBuffer.length);
@@ -435,7 +435,8 @@ static const size_t intersectionStride = sizeof(MPSIntersectionDistancePrimitive
                                   accelerationStructure:_accelerationStructure];    // Acceleration structure
         // We launch another pipeline to consume the intersection results and shade the scene
         computeEncoder = [commandBuffer computeCommandEncoder];
-        
+        [computeEncoder setTexture:_randomTexture    atIndex:0];
+        [computeEncoder setTexture:_renderTargets[0] atIndex:1];
         [computeEncoder setBuffer:_uniformBuffer      offset:_uniformBufferOffset atIndex:0];
         [computeEncoder setBuffer:_rayBuffer          offset:0                    atIndex:1];
         [computeEncoder setBuffer:_shadowRayBuffer    offset:0                    atIndex:2];
@@ -445,8 +446,7 @@ static const size_t intersectionStride = sizeof(MPSIntersectionDistancePrimitive
         [computeEncoder setBuffer:_triangleMaskBuffer offset:0                    atIndex:6];
         [computeEncoder setBytes:&bounce              length:sizeof(bounce)       atIndex:7];
         
-        [computeEncoder setTexture:_randomTexture    atIndex:0];
-        [computeEncoder setTexture:_renderTargets[0] atIndex:1];
+        
         
         [computeEncoder setComputePipelineState:_shadePipeline];
         

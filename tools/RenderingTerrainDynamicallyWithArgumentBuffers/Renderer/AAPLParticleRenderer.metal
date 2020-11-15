@@ -437,7 +437,8 @@ fragment GBufferFragOut ParticlePs(const ParticleVertexOut in [[stage_in]],
                                                     15,  7, 13,  5) * (1.f/16.f);
     
     device const ParticleData& params = instanceParams[in.instanceId];
-    float4 texColor = params.texture.sample(s, in.uv, params.textureSliceIndex);
+    auto aa = sampler(min_filter::linear, mag_filter::linear, mip_filter::nearest);
+    float4 texColor = params.texture.sample(aa, in.uv, 0);
     
     if (params.opacity < 1.f)
     {
